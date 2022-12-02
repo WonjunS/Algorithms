@@ -30,33 +30,23 @@ public class Main {
     }
 
     static void pro() {
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                char c = board[i].charAt(j);
+                dfs(String.valueOf(c), i, j);
+            }
+        }
         for(int i = 0; i < K; i++) {
             String s = cases[i];
-            if(patterns.containsKey(s)) {
-                sb.append(patterns.get(s)).append('\n');
-                continue;
-            }
-            for(int j = 0; j < N; j++) {
-                for(int k = 0; k < M; k++) {
-                    char c = board[j].charAt(k);
-                    if(c != s.charAt(0)) continue;
-                    dfs(s, String.valueOf(c), j, k);
-                }
-            }
-            if(!patterns.containsKey(s)) patterns.put(s, 0);
-            sb.append(patterns.get(s)).append('\n');
+            if(patterns.containsKey(s)) sb.append(patterns.get(s)).append('\n');
+            else sb.append(0).append('\n');
         }
         System.out.println(sb);
     }
 
-    static void dfs(String s, String cand, int x, int y) {
-        if(s.length() == cand.length()) {
-            if(cand.equals(s)) {
-                patterns.put(cand, patterns.getOrDefault(cand, 0) + 1);
-            }
-            return;
-        }
-        if(!s.contains(cand)) return;
+    static void dfs(String s, int x, int y) {
+        patterns.put(s, patterns.getOrDefault(s, 0) + 1);
+        if(s.length() == 5) return;
         for(int i = 0; i < 8; i++) {
             int nx = x + dir[i][0];
             int ny = y + dir[i][1];
@@ -65,7 +55,7 @@ public class Main {
             if(nx == N) nx = 0;
             if(ny == M) ny = 0;
             char c = board[nx].charAt(ny);
-            dfs(s, cand + c, nx, ny);
+            dfs(s + c, nx, ny);
         }
     }
 
