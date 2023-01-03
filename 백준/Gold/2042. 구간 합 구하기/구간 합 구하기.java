@@ -1,6 +1,9 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
+
+    static StringTokenizer st;
 
     static int N, M, K;
     static long[] A, tree;
@@ -8,7 +11,9 @@ public class Main {
     static void init(int node, int start, int end) {
         if(start == end) {
             tree[node] = A[start];
-        } else {
+            return;
+        }
+        else {
             init(node * 2, start, (start + end) / 2);
             init(node * 2 + 1, (start + end) / 2 + 1, end);
             tree[node] = tree[node * 2] + tree[node * 2 + 1];
@@ -22,11 +27,12 @@ public class Main {
         if(start == end) {
             A[idx] = val;
             tree[node] = val;
-            return;
         }
-        update(node * 2, start, (start + end) / 2, idx, val);
-        update(node * 2 + 1, (start + end) / 2 + 1, end, idx, val);
-        tree[node] = tree[node * 2] + tree[node * 2 + 1];
+        else {
+            update(node * 2, start, (start + end) / 2, idx, val);
+            update(node * 2 + 1, (start + end) / 2 + 1, end, idx, val);
+            tree[node] = tree[node * 2] + tree[node * 2 + 1];
+        }
     }
 
     static long query(int node, int start, int end, int left, int right) {
@@ -41,39 +47,37 @@ public class Main {
         return lsum + rsum;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        N = sc.nextInt();
-        M = sc.nextInt();
-        K = sc.nextInt();
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
         A = new long[N];
-        for(int i = 0; i < N; i++) {
-            A[i] = sc.nextLong();
-        }
+        tree = new long[N * 4];
 
-        int h = (int) Math.ceil(Math.log(N) / Math.log(2));
-        int tree_size = (1 << (h+1));
-        tree = new long[tree_size];
+        for(int i = 0; i < N; i++) {
+            A[i] = Long.parseLong(br.readLine());
+        }
 
         init(1, 0, N - 1);
 
         for(int i = 0; i < M + K; i++) {
-            int a = sc.nextInt();
-
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
             if(a == 1) {
-                int idx = sc.nextInt();
-                long val = sc.nextLong();
+                int idx = Integer.parseInt(st.nextToken());
+                long val = Long.parseLong(st.nextToken());
                 update(1, 0, N - 1, idx - 1, val);
             } else {
-                int left = sc.nextInt();
-                int right = sc.nextInt();
+                int left = Integer.parseInt(st.nextToken());
+                int right = Integer.parseInt(st.nextToken());
                 sb.append(query(1, 0, N - 1, left - 1, right - 1)).append('\n');
             }
         }
-
         System.out.println(sb);
     }
 }
