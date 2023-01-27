@@ -1,77 +1,79 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     
     static StringBuilder sb = new StringBuilder();
+    static StringTokenizer st;
     
     static int N, M, V;
-    static ArrayList<Integer>[] graph;
+    static ArrayList<Integer>[] adj;
     static boolean[] visit;
     
-    static void input() {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        N = sc.nextInt();
-        M = sc.nextInt();
-        V = sc.nextInt();
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        V = Integer.parseInt(st.nextToken());
         
-        visit = new boolean[N + 1];
-        graph = new ArrayList[N + 1];
+        adj = new ArrayList[N + 1];
+        for(int i = 1; i <= N; i++) adj[i] = new ArrayList<>();
         
-        for(int i = 0; i <= N; i++) {
-            graph[i] = new ArrayList<Integer>();
-        }
-        
-        for(int i = 0; i < M; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+        for(int i = 1; i <= M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
             
-            graph[a].add(b);
-            graph[b].add(a);
+            adj[x].add(y);
+            adj[y].add(x);
         }
         
         for(int i = 1; i <= N; i++) {
-            Collections.sort(graph[i]);
+            Collections.sort(adj[i]);
         }
+        
+        visit = new boolean[N + 1];
+        dfs(V);
+        
+        for(int i = 1; i <= N; i++) visit[i] = false;
+        sb.append('\n');
+        
+        bfs(V);
+        
+        System.out.println(sb);
     }
     
-    static void dfs(int start) {
-        visit[start] = true;
-        sb.append(start).append(' ');
+    static void dfs(int x) {
+        visit[x] = true;
+        sb.append(x).append(' ');
         
-        for(int n : graph[start]) {
-            if(visit[n]) continue;
+        for(int y : adj[x]) {
+            if(visit[y]) continue;
             
-            dfs(n);
+            dfs(y);
         }
     }
     
-    static void bfs(int start) {
+    static void bfs(int V) {
         Queue<Integer> q = new LinkedList<>();
-        
-        visit[start] = true;
-        q.add(start);
+        visit = new boolean[N + 1];
+        visit[V] = true;
+        q.add(V);
         
         while(!q.isEmpty()) {
             int x = q.poll();
             sb.append(x).append(' ');
             
-            for(int n : graph[x]) {
-                if(visit[n]) continue;
+            for(int y : adj[x]) {
+                if(visit[y]) continue;
                 
-                q.add(n);
-                visit[n] = true;
+                visit[y] = true;
+                q.add(y);
             }
         }
-    }
-    
-    public static void main(String[] args) {
-        input();
-        dfs(V);
-        for(int i = 1; i <= N; i++) visit[i] = false;
-        sb.append('\n');
-        bfs(V);
         
-        System.out.println(sb);
+        sb.append('\n');
     }
 }
