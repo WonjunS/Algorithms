@@ -3,12 +3,12 @@ import java.util.Stack;
 class Solution {
     
     public String solution(String p) {
-        String answer = dfs(p);
+        String answer = solve(p);
         
         return answer;
     }
     
-    static String dfs(String w) {
+    static String solve(String w) {
         if(w.equals("")) {
             return w;
         }
@@ -24,12 +24,12 @@ class Solution {
         String v = w.substring(i + 1);
         
         if(isCorrect(u)) {
-            v = dfs(v);
+            v = solve(v);
         }
         
         if(!isCorrect(u)) {
             String str = "(";
-            str = str + dfs(v);
+            str = str + solve(v);
             str = str + ")";
             
             for(int j = 1; j < u.length() - 1; j++) {
