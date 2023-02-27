@@ -5,8 +5,7 @@ class Solution {
         int d = 0;
         int p = 0;
         
-        for(int i = n - 1; i >= 0; i--) {
-            
+        for(int i = n - 1; i >= 0; i--) {  
             int cnt = 0;
             
             d -= deliveries[i];
