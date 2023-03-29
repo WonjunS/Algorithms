@@ -19,30 +19,24 @@ class Solution {
     static void recur(String[] data, int k) {
         if(k == 8) {
             for(int i = 0; i < data.length; i++) {
-                char a = data[i].charAt(0);
-                char b = data[i].charAt(2);
-                char comp = data[i].charAt(3);
+                char friend = data[i].charAt(0);
+                char opponent = data[i].charAt(2);
+                char condition = data[i].charAt(3);
                 int dist = Character.getNumericValue(data[i].charAt(4));
                 
-                if(comp == '>') {
-                    int a_idx = findIndex(a);
-                    int b_idx = findIndex(b);
-                    
-                    if(Math.abs(a_idx - b_idx) <= dist + 1) {
+                int friend_idx = findIndex(friend);
+                int opponent_idx = findIndex(opponent);
+                
+                if(condition == '>') {
+                    if(Math.abs(friend_idx - opponent_idx) - 1 <= dist) {
                         return;
                     }
-                } else if(comp == '<') {
-                    int a_idx = findIndex(a);
-                    int b_idx = findIndex(b);
-                    
-                    if(Math.abs(a_idx - b_idx) >= dist + 1) {
+                } else if(condition == '<') {
+                    if(Math.abs(friend_idx - opponent_idx) - 1 >= dist) {
                         return;
                     }
-                } else if(comp == '=') {
-                    int a_idx = findIndex(a);
-                    int b_idx = findIndex(b);
-                    
-                    if(Math.abs(a_idx - b_idx) != dist + 1) {
+                } else if(condition == '=') {
+                    if(Math.abs(friend_idx - opponent_idx) - 1 != dist) {
                         return;
                     }
                 }
