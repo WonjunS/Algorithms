@@ -2,47 +2,48 @@ import java.util.*;
 
 class Solution {
     
-    static int best = Integer.MAX_VALUE;
-    static ArrayList<String> list;
+    static int answer, n;
+    static boolean[] visit;
+    static List<String> list;
     
     public int solution(String begin, String target, String[] words) {
-        int answer = 0;
-        list = new ArrayList<>();
+        list = Arrays.asList(words);
+        answer = Integer.MAX_VALUE;
+        n = list.size();
+        visit = new boolean[n];
         
-        int idx = 0;
-        for(idx = 0; idx < words.length; idx++) {
-            if(words[idx].equals(target)) break;
+        if(!list.contains(target)) {
+            return 0;
         }
-        if(idx == words.length) return 0;
         
-        dfs(words, begin, target);
+        dfs(begin, target, 0);
         
-        return best;
+        return answer;
     }
     
-    static void dfs(String[] words, String curr, String target) {
+    static void dfs(String curr, String target, int k) {
         if(curr.equals(target)) {
-            best = Math.min(list.size(), best);
+            answer = Math.min(answer, k);
             return;
         }
-        for(int i = 0; i < words.length; i++) {
-            if(words[i].equals(curr)) continue;
-            if(list.contains(words[i])) continue;
-            if(!isAvailable(words[i], curr)) continue;
-            
-            System.out.println(list);
-            list.add(words[i]);
-            dfs(words, words[i], target);
-            list.remove(words[i]);
+        for(int i = 0; i < n; i++) {
+            if(visit[i]) continue;
+            if(!isAvailable(curr, list.get(i))) continue;
+            visit[i] = true;
+            dfs(list.get(i), target, k + 1);
+            visit[i] = false;
         }
     }
     
-    static boolean isAvailable(String curr, String prev) {
-        for(int i = 0; i < curr.length(); i++) {
-            String s1 = curr.substring(0, i) + curr.substring(i + 1, curr.length());
-            String s2 = prev.substring(0, i) + prev.substring(i + 1, prev.length());
-            if(s1.equals(s2)) return true;
+    static boolean isAvailable(String s1, String s2) {
+        int cnt = 0;
+        for(int i = 0; i < s1.length(); i++) {
+            char c1 = s1.charAt(i);
+            char c2 = s2.charAt(i);
+            
+            if(c1 != c2) cnt++;
         }
-        return false;
+        
+        return cnt == 1;
     }
 }
