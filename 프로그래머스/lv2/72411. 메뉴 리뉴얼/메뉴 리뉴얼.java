@@ -1,55 +1,72 @@
 import java.util.*;
 
 class Solution {
-    static HashMap<String, Integer> map;
     
-    static void combi(String str, StringBuilder sb, int idx, int cnt, int n) {
-        if(cnt == n) {
-            map.put(sb.toString(), map.getOrDefault(sb.toString(), 0) + 1);
-            return ;
-        }
-        for(int i = idx; i < str.length(); i++) {
-            sb.append(str.charAt(i));
-            
-            combi(str, sb, i + 1, cnt + 1, n);
-            
-            sb.delete(cnt, cnt + 1);
-        }
-    }
+    static int N;
+    static String order;
+    static List<String> list;
+    static Map<String, Integer> map;
     
-    public ArrayList<String> solution(String[] orders, int[] course) {
-        ArrayList<String> answer = new ArrayList<>();
+    public List<String> solution(String[] orders, int[] course) {
+        list = new ArrayList<>();
+        map = new HashMap<>();
         
         for(int i = 0; i < orders.length; i++) {
-            char[] charArr = orders[i].toCharArray();
-            Arrays.sort(charArr);
-            orders[i] = String.valueOf(charArr);
+            order = sortMenu(orders[i]);
+            N = order.length();
+            
+            combine("", 0);
         }
         
         for(int i = 0; i < course.length; i++) {
-            map = new HashMap<String, Integer>();
+            List<String> subList = new ArrayList<>();
+            int len = course[i];
+            int max = 0;
             
-            int max = Integer.MIN_VALUE;
-            
-            for(int j = 0; j < orders.length; j++) {
-                StringBuilder sb = new StringBuilder();
-                if(orders[j].length() >= course[i]) {
-                    combi(orders[j], sb, 0, 0, course[i]);
+            for(String ky : map.keySet()) {
+                int cnt = map.get(ky);
+                if(cnt >= 2 && ky.length() == len) {
+                    if(max == cnt) {
+                        subList.add(ky);
+                        continue;
+                    }
+                    if(cnt > max) {
+                        subList.clear();
+                        max = cnt;
+                        subList.add(ky);
+                        continue;
+                    }
                 }
             }
-            
-            for(Map.Entry<String, Integer> entry : map.entrySet()){
-                max = Math.max(max, entry.getValue());
-            }
-            
-            for(Map.Entry<String, Integer> entry : map.entrySet()){
-                if(max >= 2 && entry.getValue() == max)
-                    answer.add(entry.getKey());
+            for(String s : subList) {
+                list.add(s);
             }
         }
         
-        Collections.sort(answer);
+        Collections.sort(list);
         
-        return answer;
+        return list;
+    }
+    
+    static void combine(String course, int k) {
+        if(k == N) {
+            if(course.length() > 1) {
+                map.put(course, map.getOrDefault(course, 0) + 1);
+            }
+            return;
+        }
+        combine(course + order.charAt(k) + "", k + 1);
+        combine(course + "", k + 1);
+    }
+    
+    static String sortMenu(String s) {
+        String[] str = s.split("");
+        Arrays.sort(str);
+        String sorted = "";
+        for(String x : str) {
+            sorted = sorted + x;
+        }
+        
+        return sorted;
     }
 }
