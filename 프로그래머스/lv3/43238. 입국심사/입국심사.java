@@ -1,12 +1,16 @@
 class Solution {
+    
+    static int N;
+    
     public long solution(int n, int[] times) {
         long answer = 0;
-        long L = 1, R = (long) Math.pow(10, 18);
+        N = n;
         
-        while(L <= R) {
+        long L = 1, R = (long) Math.pow(10, 18);
+        while(L < R) {
             long mid = (L + R) / 2;
-            if(determination(times, mid, n)) {
-                R = mid - 1;
+            if(isAvailable(mid, times)) {
+                R = mid;
                 answer = mid;
             } else {
                 L = mid + 1;
@@ -16,11 +20,12 @@ class Solution {
         return answer;
     }
     
-    static boolean determination(int[] times, long mid, int n) {
+    static boolean isAvailable(long x, int[] times) {
         long total = 0;
-        for(int i = 0; i < times.length; i++) {
-            total += mid / (long) times[i];
+        for(int time : times) {
+            total += x / (long) time;
         }
-        return total >= (long) n;
+        
+        return total >= (long) N;
     }
 }
