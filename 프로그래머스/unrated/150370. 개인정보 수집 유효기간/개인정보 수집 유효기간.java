@@ -2,83 +2,84 @@ import java.util.*;
 
 class Solution {
     
+    static int t_year, t_month, t_day;
     static List<Integer> answer;
-    static Map<String, Integer> map;
+    static Map<String, Integer> termsList;
     
     public List<Integer> solution(String today, String[] terms, String[] privacies) {
         answer = new ArrayList<>();
-        map = new HashMap<>();
-        
-        String[] str_t = today.split("\\.");
-        int year = Integer.parseInt(str_t[0]);
-        int month = Integer.parseInt(str_t[1]);
-        int day = Integer.parseInt(str_t[2]);
-        
-        for(int i = 0; i < terms.length; i++) {
-            String[] str = terms[i].split(" ");
+        termsList = new HashMap<>();
+        for(String term : terms) {
+            String[] str = term.split(" ");
             String type = str[0];
-            int term = Integer.parseInt(str[1]);
-            
-            map.put(type, term);
+            int length = Integer.parseInt(str[1]);
+            termsList.put(type, length);
         }
+        
+        t_year = Integer.parseInt(today.split("\\.")[0]);
+        t_month = Integer.parseInt(today.split("\\.")[1]);
+        t_day = Integer.parseInt(today.split("\\.")[2]);
         
         for(int i = 0; i < privacies.length; i++) {
-            String[] s = privacies[i].split(" ");
-            String type = s[1];
+            String[] str = privacies[i].split(" ");
+            String type = str[1];
             
-            String[] str = s[0].split("\\.");
-            int y = Integer.parseInt(str[0]);
-            int m = Integer.parseInt(str[1]);
-            int d = Integer.parseInt(str[2]);
+            int year = Integer.parseInt(str[0].split("\\.")[0]);
+            int month = Integer.parseInt(str[0].split("\\.")[1]);
+            int day = Integer.parseInt(str[0].split("\\.")[2]);
             
-            int term = map.get(type);
-            int expired_y, expired_m, expired_d;
-            if(m + term > 12) {
-                expired_y = (m + term) / 12 + y;
-                if(d == 1) {
-                    expired_m = ((m + term) % 12) - 1;
-                    if(expired_m == 0) {
-                        expired_m = 12;
-                        expired_y -= 1;
-                    }
-                    expired_d = 28;
+            int length = termsList.get(type);
+            
+            if(month + length > 12) {
+                if(day == 1) {
+                    year = year + (month + length - 1) / 12;
+                    month = (month + length - 1) % 12;
+                    day = 28;
                 } else {
-                    expired_m = (m + term) % 12;
-                    if(expired_m == 0) {
-                        expired_m = 12;
-                        expired_y -= 1;
-                    }
-                    expired_d = d - 1;
+                    year = year + (month + length) / 12;
+                    month = (month + length) % 12;
+                    day = day - 1;
                 }
             } else {
-                expired_y = y;
-                if(d == 1) {
-                    expired_m = m + term - 1;
-                    expired_d = 28;
+                if(day == 1) {
+                    month = month + length - 1;
+                    day = 28;
                 } else {
-                    expired_m = m + term;
-                    expired_d = d - 1;
+                    month = month + length;
+                    day = day - 1;
                 }
             }
             
-            if(year > expired_y) {
-                answer.add(i + 1);
-                continue;
+            if(month == 0) {
+                year -= 1;
+                month = 12;
             }
-            if(year == expired_y) {
-                if(month > expired_m) {
-                    answer.add(i + 1);
-                    continue;
+            
+            if(isExpired(year, month, day)) {
+                answer.add(i + 1);
+            }
+        }
+        
+        Collections.sort(answer);
+        
+        return answer;
+    }
+    
+    private static boolean isExpired(int year, int month, int day) {
+        if(year < t_year) {
+            return true;
+        } else {
+            if(year == t_year) {
+                if(month < t_month) {
+                    return true;
                 }
-                if(month == expired_m) {
-                    if(day > expired_d) {
-                        answer.add(i + 1);
-                        continue;
+                if(month == t_month) {
+                    if(day < t_day) {
+                        return true;
                     }
                 }
             }
         }
-        
-        return answer;
+        return false;
     }
 }
