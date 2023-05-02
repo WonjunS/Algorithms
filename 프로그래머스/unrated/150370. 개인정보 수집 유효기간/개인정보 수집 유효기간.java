@@ -31,6 +31,7 @@ class Solution {
             int length = termsList.get(type);
             
             if(month + length > 12) {
+                // 수집일자가 1일이면 일은 28일로 바꾸고, (n - 1)개월만 더해야 함
                 if(day == 1) {
                     year = year + (month + length - 1) / 12;
                     month = (month + length - 1) % 12;
@@ -50,29 +51,33 @@ class Solution {
                 }
             }
             
+            // ex) 2020년 6월 5일에 18개월 후면 2021년 12월 4일이 되야함
+            // 위에꺼 그대로 하면 2022년 0월 4일로 나옴
             if(month == 0) {
                 year -= 1;
                 month = 12;
             }
             
+            // 오늘 날짜 > 만료 일자이면 answer에 추가
             if(isExpired(year, month, day)) {
                 answer.add(i + 1);
             }
         }
         
-        Collections.sort(answer);
-        
         return answer;
     }
     
     private static boolean isExpired(int year, int month, int day) {
+        // 연도 비교
         if(year < t_year) {
             return true;
         } else {
+            // 연도 같으면 월 비교
             if(year == t_year) {
                 if(month < t_month) {
                     return true;
                 }
+                // 월도 같으면 일 비교
                 if(month == t_month) {
                     if(day < t_day) {
                         return true;
