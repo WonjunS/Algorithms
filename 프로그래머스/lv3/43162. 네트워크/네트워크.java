@@ -2,53 +2,44 @@ import java.util.*;
 
 class Solution {
     
+    static int answer;
+    static boolean[] visited;
     static ArrayList<Integer>[] adj;
-    static boolean[] visit;
-    static int answer = 0;
     
     public int solution(int n, int[][] computers) {
-        int length = computers.length;
-        
-        adj = new ArrayList[length];
-        visit = new boolean[length];
-        for(int i = 0; i < length; i++) {
-            adj[i] = new ArrayList<Integer>();
+        adj = new ArrayList[n];
+        for(int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
         }
-        for(int i = 0; i < length; i++) {
-            for(int j = 0; j < length; j++) {
-                if(computers[i][j] == 0) continue;
-                else {
-                    if(i == j) continue;
-                    if(!adj[i].contains(j)) adj[i].add(j);
-                    if(!adj[j].contains(i)) adj[j].add(i);
+        
+        for(int i = 0; i < computers.length; i++) {
+            for(int j = 0; j < computers[i].length; j++) {
+                if(i == j) continue;
+                if(computers[i][j] == 1) {
+                    adj[i].add(j);
+                    adj[j].add(i);
                 }
             }
         }
         
-        for(int i = 0; i < length; i++) {
-            if(visit[i]) continue;
-            else {
-                bfs(i);
-                answer++;
-            }
+        visited = new boolean[n];
+        
+        for(int i = 0; i < n; i++) {
+            if(visited[i]) continue;
+            dfs(i);
+            answer++;
         }
         
         return answer;
     }
     
-    static void bfs(int n) {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(n);
-        visit[n] = true;
+    private static void dfs(int x) {
+        visited[x] = true;
         
-        while(!q.isEmpty()) {
-            int x = q.poll();
-            for(int y : adj[x]) {
-                if(visit[y]) continue;
-                
-                q.add(y);
-                visit[y] = true;
-            }
+        for(int y : adj[x]) {
+            if(visited[y]) continue;
+            
+            dfs(y);
         }
     }
 }
