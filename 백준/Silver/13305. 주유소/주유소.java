@@ -24,13 +24,13 @@ public class Main {
             price[i] = x;
         }
         
-        int cost = price[1] * dist[1];
+        long cost = price[1] * dist[1];
         int k = 2;
         while(k < N) {
             int t = k + 1;
-            int need = price[k] * dist[k];
-            int x = need; // 이번에 다음꺼까지 넣는 거
-            int y = need; // 다음에 넣는 거
+            long need = price[k] * dist[k];
+            long x = need; // 이번에 다음꺼까지 넣는 거
+            long y = need; // 다음에 넣는 거
             while(true) {
                 if(t == N) {
                     cost += y;
