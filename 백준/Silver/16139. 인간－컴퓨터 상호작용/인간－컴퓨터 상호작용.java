@@ -10,13 +10,11 @@ public class Main {
         String s = br.readLine();
         int q = Integer.parseInt(br.readLine());
         
-        int[][] count = new int[s.length() + 1][26];
-        for(int i = 1; i <= s.length(); i++) {
-            char c = s.charAt(i - 1);
+        int[][] count = new int[s.length()][26];
+        for(int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
             int idx = (int) c - 'a';
-            for(int j = i; j <= s.length(); j++) {
-                count[j][idx] += 1;
-            }
+            count[i][idx] = 1;
         }
         
         StringBuilder sb = new StringBuilder();
@@ -27,8 +25,10 @@ public class Main {
             int r = Integer.parseInt(st.nextToken());
             
             int idx = (int) a - 'a';
-            
-            int total = count[r + 1][idx] - count[l][idx];
+            int total = 0;
+            for(int j = l; j <= r; j++) {
+                total += count[j][idx];
+            }
             
             sb.append(total).append('\n');
         }
