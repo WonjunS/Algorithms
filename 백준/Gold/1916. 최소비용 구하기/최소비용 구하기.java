@@ -1,82 +1,74 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     
-    static int N, M, start, end;
-    static int[] dist;
-    static ArrayList<Edge>[] edges;
-    
-    static class Edge {
-        private int to;
-        private int weight;
-        
-        public Edge(int to, int weight) {
-            this.to = to;
-            this.weight = weight;
-        }
-    }
-    
-    static class Info {
+    private static class Edge {
         private int idx;
         private int dist;
         
-        public Info(int idx, int dist) {
+        public Edge(int idx, int dist) {
             this.idx = idx;
             this.dist = dist;
         }
     }
     
-    static void input() {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-        dist = new int[N + 1];
+    private static int N, M;
+    private static List<Edge>[] edges;
+    private static int[] dist;
+    
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+        
         edges = new ArrayList[N + 1];
-        for(int i = 1; i <= N; i++) edges[i] = new ArrayList<Edge>();
-        for(int i = 0; i < M; i++) {
-            int from = sc.nextInt();
-            int to = sc.nextInt();
-            int weight = sc.nextInt();
+        dist = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            dist[i] = Integer.MAX_VALUE;
+            edges[i] = new ArrayList<>();
+        }
+        
+        for(int i = 1; i <= M; i++) {
+            st = new StringTokenizer(br.readLine());
+            
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
+            
             edges[from].add(new Edge(to, weight));
         }
-        start = sc.nextInt();
-        end = sc.nextInt();
-    }
-    
-    static void dijkstra(int start) {
-        for(int i = 1; i <= N; i++) dist[i] = Integer.MAX_VALUE;
         
-        PriorityQueue<Info> pq = new PriorityQueue<>(new Comparator<Info>() {
-            @Override
-            public int compare(Info o1, Info o2) {
-                return o1.dist - o2.dist;
-            }
-        });
+        st = new StringTokenizer(br.readLine());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
         
-        dist[start] = 0;
-        pq.add(new Info(start, 0));
-        
-        while(!pq.isEmpty()) {
-            Info info = pq.poll();
-            
-            if(dist[info.idx] != info.dist) continue;
-            
-            for(Edge e : edges[info.idx]) {
-                if(dist[info.idx] + e.weight >= dist[e.to]) continue;
-                
-                dist[e.to] = dist[info.idx] + e.weight;
-                pq.add(new Info(e.to, dist[e.to]));
-            }
-        }
-    }
-    
-    static void pro() {
         dijkstra(start);
+        
         System.out.println(dist[end]);
     }
     
-    public static void main(String[] args) {
-        input();
-        pro();
+    private static void dijkstra(int start) {
+        PriorityQueue<Edge> pq = new PriorityQueue<>((o1, o2) -> (o1.dist - o2.dist));
+        
+        dist[start] = 0;
+        pq.add(new Edge(start, 0));
+        
+        while(!pq.isEmpty()) {
+            Edge edge = pq.poll();
+            
+            if(edge.dist != dist[edge.idx]) continue;
+            
+            for(Edge e : edges[edge.idx]) {
+                if(dist[edge.idx] + e.dist >= dist[e.idx]) continue;
+                
+                dist[e.idx] = dist[edge.idx] + e.dist;
+                
+                pq.add(new Edge(e.idx, dist[e.idx]));
+            }
+        }
     }
+    
 }
