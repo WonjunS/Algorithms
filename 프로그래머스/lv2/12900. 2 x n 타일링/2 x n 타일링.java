@@ -1,18 +1,17 @@
 class Solution {
+    
+    private static final int MOD = 1000000007;
+    
     public int solution(int n) {
-        int[] Dy = new int[n + 1];
-        int mod = 1000000007;
+        int[] DP = new int[n + 1];
         
-        Dy[1] = 1;
-        
-        if(n >= 2) {
-            Dy[2] = 2;
-        }
+        DP[1] = 1;
+        DP[2] = 2;
         
         for(int i = 3; i <= n; i++) {
-            Dy[i] = (Dy[i - 1] + Dy[i - 2]) % mod;
+            DP[i] = (DP[i - 2] + DP[i - 1]) % MOD;
         }
-
-        return Dy[n];
+        
+        return DP[n];
     }
 }
