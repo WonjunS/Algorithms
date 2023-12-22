@@ -28,10 +28,10 @@ public class Main {
             if(o1.gold != o2.gold) {
                 return o2.gold - o1.gold;
             }
-            if(o1.gold == o2.gold) {
+            if(o1.silver != o2.silver) {
                 return o2.silver - o1.silver;
             }
-            if(o1.silver == o2.silver) {
+            if(o1.bronze != o2.bronze) {
                 return o2.bronze - o1.bronze;
             }
             return o2.gold - o1.gold;
