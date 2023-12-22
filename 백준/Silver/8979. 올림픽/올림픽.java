@@ -25,7 +25,7 @@ public class Main {
         int K = Integer.parseInt(st.nextToken());
         
         PriorityQueue<Country> pq = new PriorityQueue<>((o1, o2) -> {
-            if(o1.gold < o2.gold) {
+            if(o1.gold != o2.gold) {
                 return o2.gold - o1.gold;
             }
             if(o1.gold == o2.gold) {
