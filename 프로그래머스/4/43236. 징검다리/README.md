@@ -1,10 +1,10 @@
 # [level 4] 징검다리 - 43236 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/43236) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/43236?language=javascript) 
 
 ### 성능 요약
 
-메모리: 90.8 MB, 시간: 19.09 ms
+메모리: 38.9 MB, 시간: 23.11 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 06일 12:47:11
+2024년 04월 14일 21:40:59
 
 ### 문제 설명
 
