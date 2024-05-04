@@ -51,17 +51,13 @@ public class Main {
 
         // 각 회원의 점수 저장
         scores = new ArrayList<>();
+        
+        // n점을 기록한 회원 수
+        int cnt = 0;
 
-        // 1점인 회원이 있는지 확인
-        for(int i = 1; i <= N; i++) {
-            if(friends[i].size() == N - 1) {
-                checked[i] = true;
-                scores.add(new Score(i, 1));
-            }
-        }
-
-        // 2점인 회원이 있는지 확인
-        for(int i = 2; i <= 50; i++) {
+        // n점인 회원이 있는지 확인
+        for(int i = 1; i <= 50; i++) {
+            if(cnt > 0) break;
             for(int j = 1; j <= N; j++) {
                 if(checked[j]) continue;
 
@@ -69,6 +65,7 @@ public class Main {
 
                 if(isAllFriend(j)) {
                     checked[j] = true;
+                    cnt++;
                     scores.add(new Score(j, i));
                 }
 
@@ -76,33 +73,22 @@ public class Main {
             }
         }
 
-        scores.sort((o1, o2) -> (o1.score - o2.score));
-        // for (Score s : scores) {
-        //     System.out.println("idx = " + s.idx + ", score = " + s.score);
-        // }
+        scores.sort((o1, o2) -> (o1.idx - o2.idx));
 
-        int min = -1;
-        int cnt = 0;
-        List<Integer> minScoreList = new ArrayList<>();
-        for(Score s : scores) {
-            if(min == -1 || s.score == min) {
-                min = s.score;
-                cnt++;
-                minScoreList.add(s.idx);
-            } else break;
-        }
+        // 가장 낮은 점수
+        int min = scores.get(0).score;
 
         sb.append(min).append(' ').append(cnt).append('\n');
 
-        minScoreList.sort((o1, o2) -> o1 - o2);
-        for(int n : minScoreList) {
-            sb.append(n).append(' ');
+        for(Score s : scores) {
+            sb.append(s.idx).append(' ');
         }
 
         System.out.println(sb.toString());
         
     }
 
+    // 친구 관계를 만족하는지 확인
     private static boolean isAllFriend(int idx) {
         for(int i = 1; i <= N; i++) {
             if(i == idx) continue;
@@ -112,12 +98,14 @@ public class Main {
         return true;
     }
 
+    // 배열 초기화
     private static void resetArray() {
         for(int i = 1; i <= N; i++) {
             isFriend[i] = false;
         }
     }
 
+    // 친구, 친구 ~ 친구, ... 관계 확인
     private static void dfs(int idx, int currDepth, int depth) {
         isFriend[idx] = true;
 
