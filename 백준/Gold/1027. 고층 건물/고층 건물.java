@@ -26,7 +26,7 @@ public class Main {
                 int x2 = i - j;
                 int y2 = arr[i];
 
-                double g = calcGradient(y1, y2, x1, x2);
+                double g = calcGradient(x1, y1, x2, y2);
 
                 boolean flag = true;
                 for(int k = j + 1; k < i; k++) {
@@ -50,7 +50,7 @@ public class Main {
                 int x2 = j - i;
                 int y2 = arr[j];
 
-                double g = calcGradient(y1, y2, x1, x2);
+                double g = calcGradient(x1, y1, x2, y2);
 
                 boolean flag = true;
                 for(int k = i + 1; k < j; k++) {
@@ -75,7 +75,7 @@ public class Main {
         
     }
 
-    private static double calcGradient(int y1, int y2, int x1, int x2) {
+    private static double calcGradient(int x1, int y1, int x2, int y2) {
         return (double) (y2 - y1) / (double) (x2 - x1);
     }
 
