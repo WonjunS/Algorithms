@@ -33,8 +33,8 @@ public class Main {
                 if(visit[i][j]) continue;
 
                 area = 0;
-                // dfs(i, j);
-                bfs(i, j);
+                dfs(i, j);
+                // bfs(i, j);
                 cnt++;
                 maxArea = Math.max(maxArea, area);
             }
