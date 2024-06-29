@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
 
-    private static int answer, idx, N;
+    private static int answer, N;
     private static boolean[][] visit;
     private static int[][] map;
     private static int[][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
@@ -36,14 +36,13 @@ public class Main {
         }
 
         visit = new boolean[N][N];
-        idx = 1;
+        int num = 1;
 
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
-                if(map[i][j] == 0) continue;
-                if(visit[i][j]) continue;
-                setIslandNumber(i, j, idx);
-                idx++;
+                if(map[i][j] == 0 || visit[i][j]) continue;
+                setIslandNumber(i, j, num);
+                num++;
             }
         }
 
@@ -51,8 +50,7 @@ public class Main {
         visit = new boolean[N][N];
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
-                if(visit[i][j]) continue;
-                if(map[i][j] == 0) continue;
+                if(map[i][j] == 0 || visit[i][j]) continue;
                 setBridge(i, j, map[i][j]);
                 visit = new boolean[N][N];
             }
