@@ -3,19 +3,16 @@ import java.io.*;
 
 public class Main {
 
-    private static int N, M, R;
-    private static int[][] array;
-
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        R = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int R = Integer.parseInt(st.nextToken());
 
-        array = new int[N][M];
+        int[][] array = new int[N][M];
         for(int i = 0; i < N; i++) {
             String[] str = br.readLine().split(" ");
             for(int j = 0; j < M; j++) {
