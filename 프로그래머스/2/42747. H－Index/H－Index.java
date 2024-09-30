@@ -6,22 +6,17 @@ class Solution {
         
         Arrays.sort(citations);
         
-        Stack<Integer> stk = new Stack<>();
-        for(int c : citations) {
-            stk.push(c);
-        }
-        
-        int N = citations.length;
-        int last = Integer.MAX_VALUE;
-        for(int h = N; h >= 0; h--) {
-            while(!stk.isEmpty() && stk.peek() >= h) {
-                int x = stk.pop();
+        for(int h = 1000; h > 0; h--) {
+            int over = 0;
+            int under = 0;
+            
+            for(int i = 0; i < citations.length; i++) {
+                int citation = citations[i];
+                if(citation >= h) over++;
+                if(citation <= h) under++;
             }
             
-            int over = N - stk.size();
-            int under = stk.size();
-            
-            if(over >= h && under <= h) {
+            if(over >= h && h >= under) {
                 answer = h;
                 break;
             }
